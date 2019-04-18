@@ -5,3 +5,4 @@
 Open your console and enter java -jar JavaStatisticsReader.jar -p "Path to your src folder"
 
 # Downlod
+[Click here](https://github.com/DasDirt/JavaStatisticsReader/releases)
