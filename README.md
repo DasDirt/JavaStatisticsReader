@@ -5,7 +5,7 @@
 Open your console and enter java -jar JavaStatisticsReader.jar -p "Path to your src folder"
 
 # Output example
-![alt text](http://prntscr.com/ndr7so "Example Image")
+![Example Image](https://github.com/DasDirt/JavaStatisticsReader/blob/master/Screenshot_1.png "Example Image")
 
 # Downlod
 [Click here](https://github.com/DasDirt/JavaStatisticsReader/releases)
