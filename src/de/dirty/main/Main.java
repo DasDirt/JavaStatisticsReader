@@ -75,7 +75,7 @@ public class Main
         System.out.println("Found " + floats + " floats!");
         System.out.println("Found " + doubles + " doubles!");
         System.out.println("Found " + longs + " longs!");
-        System.out.println("The longest class with: " + classLines + " is: " + className);
+        System.out.println("The longest class with: " + classLines + " lines of code is: " + className);
         System.out.println("Took " + (System.currentTimeMillis() - startTime) + " ms!");
     }
 
