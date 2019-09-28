@@ -12,12 +12,20 @@ import java.io.FilenameFilter;
  * @project JavaStatisticsReader
  * @since 18.04.2019 15:50
  */
-public class Main {
+public class Main
+{
 
-    private static int classes, lines, ifs, longs, doubles, ints, floats, booleans, strings;
-    private static long startTime;
+    private int classes, lines, ifs, longs, doubles, ints, floats, booleans, strings, classLines;
+    private long startTime;
+    private String className = "";
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
+        new Main(args);
+    }
+
+    public Main(String[] args)
+    {
         Options options = new Options();
 
         Option path = new Option("p", "path", true, "Path to src folder");
@@ -28,24 +36,32 @@ public class Main {
         HelpFormatter formatter = new HelpFormatter();
         CommandLine commandLine = null;
 
-        try {
+        try
+        {
             commandLine = parser.parse(options, args);
-        } catch (ParseException e) {
+        } catch (ParseException e)
+        {
             System.out.println(e.getMessage());
             formatter.printHelp("JavaStatisticsReader", options);
             System.exit(1);
         }
 
-        if (commandLine != null) {
+        if (commandLine != null)
+        {
             String inputPath = commandLine.getOptionValue("path");
             File srcDir = new File(inputPath);
-            if (srcDir.exists() && srcDir.isDirectory()) {
+            if (srcDir.exists() && srcDir.isDirectory())
+            {
                 startTime = System.currentTimeMillis();
                 scanFolder(srcDir);
-            } else {
+            }
+            else
+            {
                 System.out.println("The path '" + inputPath + "' isn´t a valid or nor a directory");
             }
-        } else {
+        }
+        else
+        {
             formatter.printHelp("JavaStatisticsReader", options);
             System.exit(1);
         }
@@ -59,39 +75,53 @@ public class Main {
         System.out.println("Found " + floats + " floats!");
         System.out.println("Found " + doubles + " doubles!");
         System.out.println("Found " + longs + " longs!");
+        System.out.println("The longest class with: " + classLines + " is: " + className);
         System.out.println("Took " + (System.currentTimeMillis() - startTime) + " ms!");
     }
 
-    private static void scanFolder(File dir) {
+    private void scanFolder(File dir)
+    {
         System.out.println("Scan folder " + dir.getName());
-        File[] files = dir.listFiles(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
+        File[] files = dir.listFiles(new FilenameFilter()
+        {
+            public boolean accept(File dir, String name)
+            {
                 return name.toLowerCase().endsWith(".java");
             }
         });
         File[] folder = dir.listFiles();
-        if (files != null && folder != null) {
-            for (File file : files) {
+        if (files != null && folder != null)
+        {
+            for (File file : files)
+            {
                 if (!file.isDirectory())
                     scanFile(file);
             }
-            for (File file : folder) {
+            for (File file : folder)
+            {
                 if (file.isDirectory())
                     scanFolder(file);
             }
-        } else {
+        }
+        else
+        {
             System.out.println("The directory " + dir.getName() + " don´t contains java files or directories");
         }
     }
 
-    private static void scanFile(File file) {
+    private void scanFile(File file)
+    {
         System.out.println("Scan file " + file.getName());
         classes++;
-        try {
+        int fileLines = 0;
+        try
+        {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null)
+            {
                 lines++;
+                fileLines++;
                 if (line.contains("if"))
                     ifs++;
                 if (line.contains("String"))
@@ -107,8 +137,14 @@ public class Main {
                 if (line.contains("long"))
                     longs++;
             }
+            if (classLines == 0 || classLines < fileLines)
+            {
+                classLines = fileLines;
+                className = file.getName();
+            }
             reader.close();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
